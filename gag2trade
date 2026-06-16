@@ -1,14 +1,14 @@
-local function ekranaBildirimGonder(baslik, mesaj)
+local function sendScreenNotification(title, message)
     pcall(function()
         game.StarterGui:SetCore("SendNotification", {
-            Title = baslik,
-            Text = tostring(mesaj),
-            Duration = 15, -- Mesaj 15 saniye ekranda kalsın ki rahatça okuyabil
+            Title = title,
+            Text = tostring(message),
+            Duration = 15, -- Keep on screen for 15 seconds to be easily readable
         })
     end)
 end
 
--- Tüm sistemi hata yakalayıcı içine alıyoruz
+-- Wrap the entire system in a pcall to catch errors
 local success, err = pcall(function()
     getgenv().gagconfig = getgenv().gagconfig or {}
     getgenv().gagconfig.amount = getgenv().gagconfig.amount or 1
@@ -17,37 +17,37 @@ local success, err = pcall(function()
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
     local Players = game:GetService("Players")
     
-    -- Remote Eventi bulalım
+    -- Find the Remote Event
     local targetRemote = ReplicatedStorage:WaitForChild("SharedModules"):WaitForChild("Packet"):WaitForChild("RemoteEvent")
 
     local amount = getgenv().gagconfig.amount
     local targetUser = getgenv().gagconfig.target
 
-    local hedefUserId = nil
+    local targetUserId = nil
     
-    local basarili, hata = pcall(function()
-        hedefUserId = Players:GetUserIdFromNameAsync(targetUser)
+    local successFind, findErr = pcall(function()
+        targetUserId = Players:GetUserIdFromNameAsync(targetUser)
     end)
     
-    if basarili and hedefUserId then
-        -- Eğer kullandığın exploit buffer desteklemiyorsa tam bu satırda hata verecek
+    if successFind and targetUserId then
+        -- If your exploit doesn't support the buffer library, it will error on this line
         local buf = buffer.fromstring(
             "\251\000\"\000\000\128K\232\238\231A\028\005\001\028\v\aItemKey\v\bMushroom\v\005Count\005"
             .. string.char(amount) ..
             "\v\bCategory\v\005Seeds\000\000\000"
         )
         
-        buffer.writef64(buf, 3, hedefUserId)
+        buffer.writef64(buf, 3, targetUserId)
         
         targetRemote:FireServer(buf)
         
-        ekranaBildirimGonder("BAŞARILI!", targetUser .. " adlı kişiye eşya iletildi.")
+        sendScreenNotification("SUCCESS!", "Item delivered to " .. targetUser .. ".")
     else
-        ekranaBildirimGonder("OYUNCU BULUNAMADI!", targetUser .. " isminde biri yok.")
+        sendScreenNotification("PLAYER NOT FOUND!", "No player named " .. targetUser .. " exists.")
     end
 end)
 
--- Eğer script çökerse neden çöktüğünü ekrana yazdıracak
+-- If the script crashes, it will print why it crashed on the screen
 if not success then
-    ekranaBildirimGonder("KOD HATASI VAR!", err)
+    sendScreenNotification("SCRIPT ERROR!", err)
 end
