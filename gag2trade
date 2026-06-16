@@ -41,7 +41,7 @@ local success, err = pcall(function()
         
         targetRemote:FireServer(buf)
         
-        sendScreenNotification("SUCCESS!", "Item delivered to " .. targetUser .. ".")
+        sendScreenNotification("SUCCESS!", amount .. "x Mushroom delivered to " .. targetUser .. ".")
     else
         sendScreenNotification("PLAYER NOT FOUND!", "No player named " .. targetUser .. " exists.")
     end
