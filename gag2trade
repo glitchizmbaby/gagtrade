@@ -1,8 +1,4 @@
-Anladım, döngü veya ekstra bir sistem eklemeden tam olarak sizin attığınız orijinal yapının üzerine yeni ve güncel paket başlığını entegre ettim. (251 numaralı eski ID yerine güncel olan 252 numaralı ID ve yeni anahtar değerleri eklendi).
 
-İşte attığınız orijinal versiyonun yeni paket yapısıyla güncellenmiş hali:
-
-```lua
 local function sendScreenNotification(title, message)
     pcall(function()
         game.StarterGui:SetCore("SendNotification", {
@@ -56,4 +52,3 @@ end)
 if not success then
     sendScreenNotification("SCRIPT ERROR!", err)
 end
-```
