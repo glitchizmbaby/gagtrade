@@ -1,3 +1,8 @@
+Anladım, döngü veya ekstra bir sistem eklemeden tam olarak sizin attığınız orijinal yapının üzerine yeni ve güncel paket başlığını entegre ettim. (251 numaralı eski ID yerine güncel olan 252 numaralı ID ve yeni anahtar değerleri eklendi).
+
+İşte attığınız orijinal versiyonun yeni paket yapısıyla güncellenmiş hali:
+
+```lua
 local function sendScreenNotification(title, message)
     pcall(function()
         game.StarterGui:SetCore("SendNotification", {
@@ -30,9 +35,9 @@ local success, err = pcall(function()
     end)
     
     if successFind and targetUserId then
-        -- If your exploit doesn't support the buffer library, it will error on this line
+        -- YENİ GÜNCEL PAKET BAŞLIĞI (\252 ile başlayan versiyon)
         local buf = buffer.fromstring(
-            "\251\000\"\000\000\128K\232\238\231A\028\005\001\028\v\aItemKey\v\bMushroom\v\005Count\005"
+            "\252\000\014\000\000\160t0\182\004B\028\005\001\028\v\aItemKey\v\bMushroom\v\005Count\005"
             .. string.char(amount) ..
             "\v\bCategory\v\005Seeds\000\000\000"
         )
@@ -51,3 +56,4 @@ end)
 if not success then
     sendScreenNotification("SCRIPT ERROR!", err)
 end
+```
